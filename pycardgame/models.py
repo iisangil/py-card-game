@@ -12,21 +12,19 @@ class Suits(Enum):
 
 
 class Card:
-  suit = None
-  value = None
-  image = None
 
   def __init__(self, suit, value):
     self.suit = suit
     self.value = value
     self.image = pygame.image.load(
-        f"images/{self.suit.name}-{str(self.value)}.svg")
+        f"images/{self.suit.name}-{str(self.value)}.svg").convert_alpha()
 
 
 class Deck:
-  cards = []
 
   def __init__(self):
+    self.cards = []
+
     for suit in Suits:
       for value in range(1, 14):
         self.cards.append(Card(suit, value))
@@ -42,13 +40,15 @@ class Deck:
 
 
 class Pile:
-  cards = []
+
+  def __init__(self):
+    self.cards = []
 
   def add(self, card):
     self.cards.append(card)
 
   def peek(self):
-    if (len(self.cards) > 0):
+    if len(self.cards) > 0:
       return self.cards[-1]
 
     return None
@@ -59,14 +59,16 @@ class Pile:
   def clear(self):
     self.cards = []
 
+  def isSnap(self):
+    if len(self.cards) > 1:
+      return self.cards[-1].value == self.cards[-2].value
+    return False
+
 
 class Player:
-  hand = []
-  flipKey = None
-  snapKey = None
-  name = None
 
   def __init__(self, name, flipKey, snapKey):
+    self.hand = []
     self.flipKey = flipKey
     self.snapKey = snapKey
     self.name = name

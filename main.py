@@ -1,6 +1,4 @@
-import pygame
+from pycardgame.__main__ import runGame
 
-pygame.init()
-bounds = (1024, 768)
-window = pygame.display.set_mode(bounds)
-pygame.display.set_caption("PyCardGame")
+if __name__ == "__main__":
+  runGame()
