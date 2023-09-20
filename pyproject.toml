@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "python-template"
+name = "py-card-game"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.10.0,<3.11"
+python = ">=3.9.0,<=3.11.5"
 pygame = "^2.5.2"
 
 [tool.pyright]
