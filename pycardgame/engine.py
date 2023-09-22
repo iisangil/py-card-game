@@ -47,11 +47,6 @@ class GameEngine:
     if not key or self.state == GameState.ENDED:
       return
 
-    if key == self.currentPlayer.flipKey:
-      self.pile.add(self.currentPlayer.play())
-      self.switchPlayer()
-      return
-
     snapCaller = None
     nonSnapCaller = None
     isSnap = self.pile.isSnap()
@@ -73,7 +68,7 @@ class GameEngine:
       return
 
     if not isSnap and nonSnapCaller:
-      self.winRound(snapCaller)
+      self.winRound(nonSnapCaller)
       self.result = {
           "winner": nonSnapCaller,
           "isSnap": isSnap,
@@ -93,4 +88,9 @@ class GameEngine:
           "winner": self.player1,
       }
       self.state = GameState.ENDED
+      return
+
+    if key == self.currentPlayer.flipKey:
+      self.pile.add(self.currentPlayer.play())
+      self.switchPlayer()
       return

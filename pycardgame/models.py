@@ -54,7 +54,9 @@ class Pile:
     return None
 
   def popAll(self):
-    return self.cards
+    cards = self.cards
+    self.cards = []
+    return cards
 
   def clear(self):
     self.cards = []
