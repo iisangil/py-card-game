@@ -22,24 +22,27 @@ class GameEngine:
     self.pile = Pile()
     self.state = GameState.PLAYING
 
-    self.deal()
+    self._deal()
     self.currentPlayer = self.player1
 
     self.result = {}
 
-  def deal(self):
+  def _deal(self):
     half = self.deck.length() // 2
     for _ in range(0, half):
       self.player1.draw(self.deck)
       self.player2.draw(self.deck)
 
-  def switchPlayer(self):
+  def _setPlayer(self, player):
+    self.currentPlayer = player
+
+  def _switchPlayer(self):
     if self.currentPlayer == self.player1:
       self.currentPlayer = self.player2
     else:
       self.currentPlayer = self.player1
 
-  def winRound(self, player):
+  def _winRound(self, player):
     self.state = GameState.SNAPPING
     player.hand.extend(self.pile.popAll())
 
@@ -59,21 +62,23 @@ class GameEngine:
       nonSnapCaller = self.player1
 
     if isSnap and snapCaller:
-      self.winRound(snapCaller)
+      self._winRound(snapCaller)
       self.result = {
           "winner": snapCaller,
           "isSnap": isSnap,
           "snapCaller": snapCaller
       }
+      self._setPlayer(snapCaller)
       return
 
     if not isSnap and nonSnapCaller:
-      self.winRound(nonSnapCaller)
+      self._winRound(nonSnapCaller)
       self.result = {
           "winner": nonSnapCaller,
           "isSnap": isSnap,
           "snapCaller": snapCaller
       }
+      self._setPlayer(nonSnapCaller)
       return
 
     if len(self.player1.hand) == 0:
@@ -92,5 +97,5 @@ class GameEngine:
 
     if key == self.currentPlayer.flipKey:
       self.pile.add(self.currentPlayer.play())
-      self.switchPlayer()
+      self._switchPlayer()
       return
